@@ -53,14 +53,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     public int getTotalNumberOfReports(String id) {
         int totalNumberOfReports = 0;
 
-        // Ideally this wouldn't happen, hopefully source doesn't give us nulls in List<>
         Employee employee = this.read(id);
         if (employee == null) {
-            throw new RuntimeException("Null employee!");
+            throw new RuntimeException("Employee does not exist");
         }
 
         List<Employee> reports = employee.getDirectReports();
-        if (reports != null) {
+        if (reports != null && reports.size() >= 1) {
             for (Employee reportingEmployee : reports) {
                 totalNumberOfReports += 1 + getTotalNumberOfReports(reportingEmployee.getEmployeeId());
             }
